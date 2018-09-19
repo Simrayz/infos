@@ -1,7 +1,5 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <h1>Welcome to the Thor Frontend</h1>
+  <div id="login-container">
     <Login/>
   </div>
 </template>
@@ -11,7 +9,7 @@
 import Login from "@/components/Login.vue";
 
 export default {
-  name: "home",
+  name: "LoginView",
   components: {
     Login
   }
@@ -19,9 +17,15 @@ export default {
 </script>
 
 <style lang="scss">
-.home {
+#login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  background-color: rgb(218, 218, 218);
   #login-form {
-    margin: 1rem auto;
+    margin: auto;
+    width: 500px;
   }
 }
 </style>

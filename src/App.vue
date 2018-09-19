@@ -1,12 +1,28 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app id="app" app-data="true">
+    <component :is="layout">
+      <router-view/>
+    </component>
+  </v-app>
 </template>
+
+<script>
+import store from "./store";
+
+const default_layout = "default";
+
+export default {
+  name: "app",
+  created() {
+    store.dispatch("checkAuth");
+  },
+  computed: {
+    layout() {
+      return (this.$route.meta.layout || default_layout) + "-layout";
+    }
+  }
+};
+</script>
 
 <style>
 #app {
@@ -27,5 +43,8 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+.layout-wrapper {
+  height: 100%;
 }
 </style>

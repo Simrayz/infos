@@ -1,8 +1,16 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/Home.vue";
+import store from "./store";
 
 Vue.use(Router);
+
+function requireAuth(to, from, next) {
+  if (!store.state.auth.authenticated) {
+    next({ path: "/login", query: { redirect: to.fullPath } });
+  } else {
+    next();
+  }
+}
 
 export default new Router({
   mode: "history",
@@ -11,16 +19,29 @@ export default new Router({
     {
       path: "/",
       name: "home",
-      component: Home
+      component: () => import("./views/Home.vue")
     },
     {
       path: "/about",
       name: "about",
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "about" */ "./views/About.vue")
+      component: () => import("./views/About.vue")
+    },
+    {
+      path: "/information",
+      name: "InfoList",
+      component: () => import("./views/Information.vue"),
+      beforeEnter: requireAuth
+    },
+    {
+      path: "/information/:name",
+      name: "info.show",
+      component: () => import("./components/Info.vue")
+    },
+    {
+      path: "/login",
+      name: "Login",
+      component: () => import("@/views/LoginView"),
+      meta: { layout: "pages" }
     }
   ]
 });
